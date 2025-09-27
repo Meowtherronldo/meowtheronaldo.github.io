@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrest - Your Career Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --primary-light: #4f46e5;
+            --primary-dark: #6366f1;
+            --background-light: #f9fafb;
+            --background-dark: #111827;
+            --text-light: #1f2937;
+            --text-dark: #f3f4f6;
+            --card-light: #ffffff;
+            --card-dark: #1f2937;
+            --border-light: #e5e7eb;
+            --border-dark: #374151;
+        }
+
+        .light {
+            --primary: var(--primary-light);
+            --background: var(--background-light);
+            --text-primary: var(--text-light);
+            --text-secondary: #6b7280;
+            --card: var(--card-light);
+            --border: var(--border-light);
+        }
+
+        .dark {
+            --primary: var(--primary-dark);
+            --background: var(--background-dark);
+            --text-primary: var(--text-dark);
+            --text-secondary: #9ca3af;
+            --card: var(--card-dark);
+            --border: var(--border-dark);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link.active,
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after,
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Resume Template Styles */
+        .resume-preview {
+            background-color: white;
+            color: #1f2937;
+        }
+
+        .template-modern .resume-header { background-color: #2c3e50; color: white; }
+        .template-modern .resume-header h2 { color: white; }
+        .template-modern .resume-section h3 { border-bottom: 2px solid #2c3e50; color: #2c3e50;}
+
+        .template-classic .resume-header { text-align: center; border-bottom: 2px solid #333; }
+        .template-classic .resume-section h3 { border-bottom: 1px solid #ccc; color: #333; }
+        
+        .template-creative .resume-header { background-color: #4f46e5; color: white; border-bottom-left-radius: 50px; }
+        .template-creative .resume-header h2 { color: white; }
+        .template-creative .resume-section h3 { color: #4f46e5; font-style: italic;}
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+
+        /* Scheduler Styles */
+        .schedule-event {
+            background-color: var(--primary);
+            color: white;
+            border-left: 4px solid var(--primary-dark);
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            background-color: rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-container {
+            transition: transform 0.3s ease;
+        }
+
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <div id="app-container" class="flex flex-col min-h-screen">
+        <!-- Header -->
+        <header class="bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-40">
+            <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Left: Logo -->
+                    <div class="flex-shrink-0 flex items-center">
+                        <svg class="h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 3.5c2 2 3.5 4.5 3.5 7.5a12.5 12.5 0 0 1-25 0c0-3 1.5-5.5 3.5-7.5"/><path d="M12 21.5V14"/><path d="M12 14c-4 0-7 3-7 7h14c0-4-3-7-7-7z"/><path d="m15.5 7.5-3.5 3.5-3.5-3.5"/></svg>
+                        <span class="ml-2 text-2xl font-bold text-text-primary">Entrest</span>
+                    </div>
+
+                    <!-- Center: Navigation Links (Desktop) -->
+                    <div class="hidden md:flex md:items-center md:space-x-8">
+                        <a href="#home" class="nav-link text-text-secondary font-medium active" data-section="home">Home</a>
+                        <a href="#resume-builder" class="nav-link text-text-secondary font-medium" data-section="resume-builder">Resume Builder</a>
+                        <a href="#courses" class="nav-link text-text-secondary font-medium" data-section="courses">Courses</a>
+                        <a href="#scheduler" class="nav-link text-text-secondary font-medium" data-section="scheduler">Scheduler</a>
+                        <a href="#guidance" class="nav-link text-text-secondary font-medium" data-section="guidance">Guidance</a>
+                        <a href="#ai-chat" class="nav-link text-text-secondary font-medium" data-section="ai-chat">AI Chat</a>
+                    </div>
+                    
+                    <!-- Right: Actions & Mobile Menu Button -->
+                    <div class="flex items-center">
+                         <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg id="theme-icon-light" class="h-6 w-6 text-text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                            <svg id="theme-icon-dark" class="h-6 w-6 text-text-primary hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                        </button>
+                        <button id="mobile-menu-button" class="md:hidden p-2 ml-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Mobile Menu -->
+                <div id="mobile-menu" class="hidden md:hidden py-2">
+                    <a href="#home" class="block py-2 px-4 text-sm nav-link active" data-section="home">Home</a>
+                    <a href="#resume-builder" class="block py-2 px-4 text-sm nav-link" data-section="resume-builder">Resume Builder</a>
+                    <a href="#courses" class="block py-2 px-4 text-sm nav-link" data-section="courses">Courses</a>
+                    <a href="#scheduler" class="block py-2 px-4 text-sm nav-link" data-section="scheduler">Scheduler</a>
+                    <a href="#guidance" class="block py-2 px-4 text-sm nav-link" data-section="guidance">Guidance</a>
+                    <a href="#ai-chat" class="block py-2 px-4 text-sm nav-link" data-section="ai-chat">AI Chat</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <section id="home" class="page-section fade-in">
+                <div class="text-center md:mt-8">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-text-primary">Navigate Your Future with <span class="text-primary">Confidence</span></h1>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-text-secondary">Your all-in-one platform for exam preparation, career guidance, and professional development. Let's build your success story, together.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+                     <div class="bg-card p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer" data-section-link="resume-builder">
+                        <svg class="h-12 w-12 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+                        <h3 class="mt-4 text-xl font-bold text-text-primary">AI Resume Builder</h3>
+                        <p class="mt-2 text-text-secondary">Craft a professional resume and enhance it with AI.</p>
+                    </div>
+                     <div class="bg-card p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer" data-section-link="courses">
+                        <svg class="h-12 w-12 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 1 0 .836L16 20.818V13Z"/><path d="M4 6V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1-1H5a1 1 0 0 1-1-1v-1"/><path d="M4 12h8"/></svg>
+                        <h3 class="mt-4 text-xl font-bold text-text-primary">AI-Powered Courses</h3>
+                        <p class="mt-2 text-text-secondary">Discover real, up-to-date courses with verified links.</p>
+                    </div>
+                     <div class="bg-card p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer" data-section-link="scheduler">
+                        <svg class="h-12 w-12 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                        <h3 class="mt-4 text-xl font-bold text-text-primary">AI Study Planner</h3>
+                        <p class="mt-2 text-text-secondary">Generate a personalized study plan instantly with AI.</p>
+                    </div>
+                     <div class="bg-card p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer" data-section-link="guidance">
+                        <svg class="h-12 w-12 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 16.5A4.5 4.5 0 1 0 7.5 12 4.5 4.5 0 0 0 12 16.5z"/><path d="M12 7.5V12l3 3"/></svg>
+                        <h3 class="mt-4 text-xl font-bold text-text-primary">AI Career Guidance</h3>
+                        <p class="mt-2 text-text-secondary">Explore career paths and get expert advice from our AI.</p>
+                    </div>
+                     <div class="bg-card p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer" data-section-link="ai-chat">
+                        <svg class="h-12 w-12 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                        <h3 class="mt-4 text-xl font-bold text-text-primary">AI Assistant</h3>
+                        <p class="mt-2 text-text-secondary">Ask anything! Get instant help with doubts, queries, and more.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="resume-builder" class="page-section hidden fade-in">
+                <!-- Resume builder content -->
+                 <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Form -->
+                    <div class="bg-card p-6 rounded-xl shadow-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-bold">Resume Information</h2>
+                            <button id="improve-resume-btn" class="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90 transition flex items-center gap-2 disabled:opacity-50">
+                                <span id="improve-resume-btn-text">✨ Improve with AI</span>
+                                <svg id="improve-resume-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <form id="resume-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text-secondary">Full Name</label>
+                                <input type="text" name="name" class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., Ananya Sharma">
+                            </div>
+                             <div>
+                                <label class="block text-sm font-medium text-text-secondary">Email</label>
+                                <input type="email" name="email" class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., ananya.sharma@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text-secondary">Phone</label>
+                                <input type="tel" name="phone" class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., +91 98765 43210">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text-secondary">Education (Latest First)</label>
+                                <textarea name="education" rows="3" class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., B.Tech in Computer Science, IIT Delhi (2020-2024)"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text-secondary">Experience</label>
+                                <textarea name="experience" id="experience-input" rows="3" class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., Summer Intern at Google (May 2023 - July 2023) - Worked on the backend for a new feature."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text-secondary">Skills</label>
+                                <textarea name="skills" id="skills-input" rows="2" class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., Python, JavaScript, React, C++"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Preview and controls -->
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-2xl font-bold">Preview & Customize</h2>
+                            <div class="flex items-center space-x-2">
+                                <button id="regenerate-template-btn" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition">Regenerate</button>
+                                <button id="download-pdf-btn" class="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90 transition">Download PDF</button>
+                            </div>
+                        </div>
+                        <div id="resume-preview-container" class="p-8 rounded-lg shadow-lg overflow-auto aspect-[1/1.414] template-modern resume-preview">
+                           <div id="resume-content">
+                                <!-- Resume will be rendered here -->
+                                <div class="resume-header p-6">
+                                    <h2 class="text-3xl font-bold" id="preview-name">Your Name</h2>
+                                    <p class="text-sm" id="preview-contact">your.email@example.com | +91 12345 67890</p>
+                                </div>
+                                <div class="p-6">
+                                    <div class="resume-section mb-4">
+                                        <h3 class="text-xl font-semibold pb-1 mb-2">Education</h3>
+                                        <p class="whitespace-pre-wrap" id="preview-education">Your education details here...</p>
+                                    </div>
+                                    <div class="resume-section mb-4">
+                                        <h3 class="text-xl font-semibold pb-1 mb-2">Experience</h3>
+                                        <p class="whitespace-pre-wrap" id="preview-experience">Your experience details here...</p>
+                                    </div>
+                                    <div class="resume-section">
+                                        <h3 class="text-xl font-semibold pb-1 mb-2">Skills</h3>
+                                        <p class="whitespace-pre-wrap" id="preview-skills">Your skills here...</p>
+                                    </div>
+                                </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="courses" class="page-section hidden fade-in">
+                <!-- Courses content -->
+                <h1 class="text-3xl font-bold text-center mb-8">Find Your Perfect Course</h1>
+                
+                <div id="courses-content">
+                     <!-- AI Course Finder -->
+                    <div class="bg-card p-6 rounded-xl shadow-md mb-12 max-w-4xl mx-auto">
+                        <h2 class="text-2xl font-bold mb-3 flex items-center">
+                            <svg class="h-6 w-6 text-primary mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                            Ask AI for Course Recommendations
+                        </h2>
+                        <p class="text-text-secondary mb-4">Can't find what you're looking for? Describe the course you need (e.g., "free data science course for beginners") and our AI will search for you.</p>
+                        <form id="course-finder-form" class="flex items-center gap-2">
+                            <input id="course-finder-input" type="text" placeholder="e.g., Best free course for CUET general test" class="flex-grow bg-background border border-border rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary" autocomplete="off">
+                            <button type="submit" class="bg-primary text-white rounded-lg p-2 hover:opacity-90 transition-opacity disabled:opacity-50">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                            </button>
+                        </form>
+                        <div id="course-finder-loader" class="text-sm text-text-secondary mt-4 hidden">
+                            <p>Entrest AI is searching for courses...</p>
+                        </div>
+                        <div id="course-finder-results" class="mt-4 p-4 border border-border rounded-lg bg-background hidden max-h-[60vh] overflow-y-auto">
+                            <!-- AI results will be injected here -->
+                            <div id="course-finder-scroll-loader" class="text-center mt-4 hidden">
+                                <svg class="animate-spin h-6 w-6 text-primary mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <p class="text-sm text-text-secondary mt-2">Finding more...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-center mb-8">Popular Courses</h2>
+                    <div id="courses-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Course cards will be injected here -->
+                    </div>
+                    <div id="courses-loader" class="text-center mt-8 hidden">
+                        <svg class="animate-spin h-8 w-8 text-primary mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <p class="mt-4 text-text-secondary">Finding more courses with AI...</p>
+                    </div>
+                </div>
+
+            </section>
+            
+            <section id="scheduler" class="page-section hidden fade-in">
+                 <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Add Event Form & AI Generator -->
+                    <div class="lg:col-span-1 bg-card p-6 rounded-xl shadow-md space-y-8">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-4">Add Study Session</h2>
+                            <form id="schedule-form" class="space-y-4">
+                                <div>
+                                    <label for="subject" class="block text-sm font-medium text-text-secondary">Subject</label>
+                                    <input type="text" id="subject" name="subject" required class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., Physics - Kinematics">
+                                </div>
+                                <div>
+                                    <label for="day" class="block text-sm font-medium text-text-secondary">Day</label>
+                                    <select id="day" name="day" required class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary">
+                                        <option>Monday</option>
+                                        <option>Tuesday</option>
+                                        <option>Wednesday</option>
+                                        <option>Thursday</option>
+                                        <option>Friday</option>
+                                        <option>Saturday</option>
+                                        <option>Sunday</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="time" class="block text-sm font-medium text-text-secondary">Time</label>
+                                    <input type="time" id="time" name="time" required class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label for="notes" class="block text-sm font-medium text-text-secondary">Notes (Optional)</label>
+                                    <textarea id="notes" name="notes" rows="2" class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., Solve 20 practice problems"></textarea>
+                                </div>
+                                <button type="submit" class="w-full py-2 px-4 bg-primary text-white rounded-md hover:opacity-90 transition">Add to Schedule</button>
+                            </form>
+                        </div>
+                        <div class="border-t border-border pt-8">
+                             <h2 class="text-2xl font-bold mb-4">AI Study Plan Generator</h2>
+                             <div class="space-y-4" id="ai-study-plan-generator">
+                                <div>
+                                    <label for="study-goal" class="block text-sm font-medium text-text-secondary">Enter your goal</label>
+                                    <input type="text" id="study-goal" class="mt-1 block w-full bg-background border border-border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="e.g., Crack JEE Mains in 3 months">
+                                </div>
+                                <button id="generate-study-plan-btn" class="w-full py-2 px-4 bg-primary text-white rounded-md hover:opacity-90 transition flex items-center justify-center gap-2 disabled:opacity-50">
+                                    <span id="generate-plan-btn-text">✨ Generate AI Study Plan</span>
+                                     <svg id="generate-plan-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </button>
+                             </div>
+                        </div>
+                    </div>
+                    <!-- Schedule View -->
+                    <div class="lg:col-span-2 bg-card p-6 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">Your Weekly Schedule</h2>
+                        <p class="text-sm text-text-secondary -mt-4 mb-4">Click an event to remove it. Schedule resets when you close the app.</p>
+                        <div id="schedule-grid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-2">
+                            <!-- Day columns will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="guidance" class="page-section hidden fade-in">
+                <!-- Career guidance content -->
+                <h1 class="text-3xl font-bold text-center mb-8">Career & College Guidance</h1>
+                <div class="max-w-4xl mx-auto space-y-12">
+                    <div id="guidance-accordion">
+                        <!-- Static Guidance items will be injected here -->
+                    </div>
+                    <div class="bg-card p-6 rounded-xl shadow-md border-t-4 border-primary">
+                        <h2 class="text-2xl font-bold mb-3 flex items-center">
+                           <svg class="h-6 w-6 text-primary mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                           Personalized AI Guidance
+                        </h2>
+                        <p class="text-text-secondary mb-4">Have a specific question? Ask our AI career counselor for personalized advice.</p>
+                        <form id="guidance-form" class="flex items-center gap-2">
+                            <input id="guidance-input" type="text" placeholder="e.g., What are the career options after B.Sc Physics?" class="flex-grow bg-background border border-border rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary" autocomplete="off">
+                            <button type="submit" class="bg-primary text-white rounded-lg p-2 hover:opacity-90 transition-opacity disabled:opacity-50">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/></svg>
+                            </button>
+                        </form>
+                        <div id="guidance-loader" class="text-sm text-text-secondary mt-4 hidden">
+                            <p>Entrest AI is preparing your guidance...</p>
+                        </div>
+                        <div id="guidance-results" class="mt-4 p-4 border border-border rounded-lg bg-background hidden">
+                            <!-- AI results will be injected here -->
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section id="ai-chat" class="page-section hidden fade-in h-[70vh] flex flex-col">
+                <div class="bg-card rounded-xl shadow-md flex-grow flex flex-col">
+                    <div class="p-4 border-b border-border">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <svg class="h-6 w-6 text-primary mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                            Entrest AI Assistant
+                        </h2>
+                        <p class="text-sm text-text-secondary">Powered by Google Gemini. Ask me about exam strategies, career choices, or complex topics.</p>
+                    </div>
+                    <div id="chat-window" class="flex-grow p-4 overflow-y-auto space-y-4">
+                        <!-- Chat messages will appear here -->
+                        <div class="flex items-start gap-3">
+                            <div class="p-2 bg-primary text-white rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center">AI</div>
+                            <div class="bg-gray-200 dark:bg-gray-700 rounded-lg p-3 max-w-lg">
+                                <p class="text-left">Hello! How can I assist you with your preparations today?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-border">
+                        <form id="chat-form" class="flex items-center gap-2">
+                            <input id="chat-input" type="text" placeholder="Type your message..." class="flex-grow bg-background border border-border rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary" autocomplete="off">
+                            <button type="submit" class="bg-primary text-white rounded-lg p-2 hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                            </button>
+                        </form>
+                         <div id="chat-loader" class="text-sm text-text-secondary mt-2 hidden">
+                            <p>Entrest AI is thinking...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Course Detail Modal -->
+    <div id="course-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden backdrop-blur-sm">
+         <div class="modal-container bg-card rounded-xl shadow-2xl w-full max-w-4xl mx-auto transform scale-95 max-h-[90vh] flex flex-col">
+            <div id="course-modal-content" class="p-6 flex-grow overflow-y-auto">
+                <!-- Dynamic content here -->
+            </div>
+             <div class="p-4 bg-background/50 border-t border-border">
+                <button id="close-course-modal-btn" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- STATE & CONFIG ---
+            let coursesData = []; // This will be populated by AI
+            const state = {
+                currentPage: 'home',
+                theme: localStorage.getItem('theme') || 'light',
+                resumeTemplateIndex: 0,
+                scheduleData: [], // Session-only schedule
+                courseProgress: {}, // Session-only progress
+                coursesFetched: false, // Flag to prevent multiple fetches
+                isFetchingMoreCourses: false,
+                isSearchingCourses: false,
+                currentSearchQuery: null,
+                courseTopicIndex: 0,
+            };
+
+            const COURSES_PER_FETCH = 6;
+            const resumeTemplates = ['template-modern', 'template-classic', 'template-creative'];
+            const courseTopics = [
+                'Complete Physics for JEE Mains', 'NEET Biology Crash Course', 'UPSC GS Foundation (Hindi)',
+                'CUET General Test Prep', 'SSC CGL Complete Course', 'Data Structures & Algorithms for interviews',
+                'Organic Chemistry Masterclass for JEE', 'CAT Quant & LRDI', 'Full Stack Web Development bootcamp',
+                'Indian Polity by M. Laxmikanth for UPSC', 'Banking Awareness for IBPS', 'GATE Mechanical Engineering',
+                'Modern History for UPSC', 'Advanced Maths for SSC', 'Complete React Developer course',
+                'Machine Learning basics', 'Digital Marketing fundamentals', 'AWS Certified Cloud Practitioner'
+            ];
+
+
+            // --- DOM ELEMENTS ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pageSections = document.querySelectorAll('.page-section');
+            const homeCardLinks = document.querySelectorAll('[data-section-link]');
+
+            // Resume Builder
+            const resumeForm = document.getElementById('resume-form');
+            const resumePreviewContainer = document.getElementById('resume-preview-container');
+            const regenerateTemplateBtn = document.getElementById('regenerate-template-btn');
+            const downloadPdfBtn = document.getElementById('download-pdf-btn');
+            const improveResumeBtn = document.getElementById('improve-resume-btn');
+            const improveResumeBtnText = document.getElementById('improve-resume-btn-text');
+            const improveResumeLoader = document.getElementById('improve-resume-loader');
+            const experienceInput = document.getElementById('experience-input');
+            const skillsInput = document.getElementById('skills-input');
+
+
+            // Courses
+            const coursesGrid = document.getElementById('courses-grid');
+            const coursesLoader = document.getElementById('courses-loader');
+            const coursesContent = document.getElementById('courses-content');
+            const courseFinderForm = document.getElementById('course-finder-form');
+            const courseFinderInput = document.getElementById('course-finder-input');
+            const courseFinderLoader = document.getElementById('course-finder-loader');
+            const courseFinderResults = document.getElementById('course-finder-results');
+            const courseFinderScrollLoader = document.getElementById('course-finder-scroll-loader');
+            const courseDetailModal = document.getElementById('course-detail-modal');
+            const courseModalContent = document.getElementById('course-modal-content');
+            const closeCourseModalBtn = document.getElementById('close-course-modal-btn');
+
+            // Scheduler
+            const scheduleForm = document.getElementById('schedule-form');
+            const scheduleGrid = document.getElementById('schedule-grid');
+            const studyGoalInput = document.getElementById('study-goal');
+            const generateStudyPlanBtn = document.getElementById('generate-study-plan-btn');
+            const generatePlanBtnText = document.getElementById('generate-plan-btn-text');
+            const generatePlanLoader = document.getElementById('generate-plan-loader');
+
+            // Guidance
+            const guidanceAccordion = document.getElementById('guidance-accordion');
+            const guidanceForm = document.getElementById('guidance-form');
+            const guidanceInput = document.getElementById('guidance-input');
+            const guidanceLoader = document.getElementById('guidance-loader');
+            const guidanceResults = document.getElementById('guidance-results');
+
+
+            // AI Chat
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatWindow = document.getElementById('chat-window');
+            const chatLoader = document.getElementById('chat-loader');
+
+            // --- STATIC DATA ---
+            const staticGuidanceData = [
+                {
+                    title: "Engineering (After 12th PCM)",
+                    content: "Top exams include JEE Main & Advanced for IITs/NITs. Other options are BITSAT, VITEEE, and state-level CETs. Focus on problem-solving in Physics, Chemistry, and Maths. Career paths: Software, Civil, Mechanical, Electrical, etc. A resume with strong projects is key for jobs."
+                },
+                {
+                    title: "Medical (After 12th PCB)",
+                    content: "NEET is the primary exam for MBBS, BDS, and AYUSH courses. Consistency in Biology, Physics, and Chemistry is crucial. High competition requires dedicated preparation. Alternative careers include Pharmacy, Biotechnology, and Physiotherapy."
+                },
+                 {
+                    title: "College Guidance",
+                    content: "Research colleges based on ranking, faculty, placements, and campus life. Participate in extracurriculars and maintain a good CGPA. Network with seniors and alumni. Utilize college resources like career services and libraries."
+                }
+            ];
+            
+            // --- FUNCTIONS ---
+            
+            // --- Theme Management ---
+            const applyTheme = () => {
+                if (state.theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+
+            const toggleTheme = () => {
+                state.theme = state.theme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', state.theme);
+                applyTheme();
+            };
+
+            // --- Navigation ---
+            const switchPage = (sectionId) => {
+                pageSections.forEach(section => {
+                    section.classList.toggle('hidden', section.id !== sectionId);
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.dataset.section === sectionId);
+                });
+
+                if (sectionId === 'courses' && !state.coursesFetched) {
+                    fetchCoursesWithAI(true); // Initial fetch
+                }
+                
+                state.currentPage = sectionId;
+                window.location.hash = sectionId;
+                mobileMenu.classList.add('hidden');
+            };
+
+            // --- Dynamic Content Rendering ---
+            const renderStars = (rating) => {
+                const numRating = parseFloat(rating);
+                if (isNaN(numRating)) return `<div class="text-xs text-text-secondary">No rating</div>`;
+
+                let stars = '';
+                const fullStars = Math.floor(numRating);
+                for (let i = 0; i < fullStars; i++) {
+                    stars += `<svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.368-2.448a1 1 0 00-1.175 0l-3.368 2.448c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.051 9.385c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69L9.049 2.927z"></path></svg>`;
+                }
+                const emptyStars = 5 - fullStars;
+                 for (let i = 0; i < emptyStars; i++) {
+                    stars += `<svg class="w-4 h-4 text-gray-300 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.368-2.448a1 1 0 00-1.175 0l-3.368 2.448c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.051 9.385c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69L9.049 2.927z"></path></svg>`;
+                }
+                return `<div class="flex items-center gap-1">${stars} <span class="text-xs text-text-secondary ml-1">(${numRating.toFixed(1)})</span></div>`;
+            };
+
+            const renderCourses = () => {
+                coursesGrid.innerHTML = coursesData.map(course => {
+                    const progress = state.courseProgress[course.id] || 0;
+                    return `
+                    <div class="bg-card p-6 rounded-xl shadow-md flex flex-col">
+                        <h3 class="text-xl font-bold text-text-primary">${course.title || 'Untitled Course'}</h3>
+                        <p class="text-text-secondary mt-1">By: ${course.instructor || 'Unknown Instructor'}</p>
+                        <div class="flex items-center justify-between mt-4">
+                           ${renderStars(course.rating)}
+                           <span class="text-sm font-semibold px-3 py-1 rounded-full ${course.type === 'Free' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'}">${course.type || 'N/A'}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 my-4">
+                           <div class="bg-primary h-2.5 rounded-full" style="width: ${progress}%"></div>
+                        </div>
+                        <button data-course-id="${course.id}" class="view-course-btn mt-auto text-center w-full py-2 px-4 bg-primary/10 text-primary font-semibold rounded-md hover:bg-primary/20 transition">View Details</button>
+                    </div>
+                `}).join('');
+            };
+            
+            const getRelatedCourses = (courseId) => {
+                const originalCourse = coursesData.find(c => c.id === courseId);
+                if (!originalCourse) return [];
+
+                const stopWords = new Set(['for', 'in', 'a', 'the', 'and', 'by', 'of', 'to', 'with', 'course', 'complete', 'crash', 'by', 'on', '&', 'for', 'mains', 'and', 'advanced', 'preparation']);
+
+                const originalTitleWords = originalCourse.title.toLowerCase().split(' ').filter(word => !stopWords.has(word));
+
+                return coursesData
+                    .filter(c => c.id !== courseId)
+                    .map(c => {
+                        let score = 0;
+                        const candidateTitleWords = new Set(c.title.toLowerCase().split(' ').filter(word => !stopWords.has(word)));
+                        
+                        originalTitleWords.forEach(word => {
+                            if (candidateTitleWords.has(word)) score += 3;
+                        });
+                        
+                        if (c.platform === originalCourse.platform) score += 1;
+
+                        return { ...c, score };
+                    })
+                    .filter(c => c.score > 1) 
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 3);
+            };
+
+            const openCourseDetailModal = (courseId) => {
+                const course = coursesData.find(c => c.id === courseId);
+                if (!course) return;
+
+                const progress = state.courseProgress[course.id] || 0;
+                
+                const relatedCourses = getRelatedCourses(course.id);
+
+                courseModalContent.innerHTML = `
+                    <div class="space-y-4">
+                        <div>
+                            <h2 class="text-3xl font-bold text-text-primary">${course.title}</h2>
+                            <p class="text-text-secondary mt-1">By ${course.instructor} on ${course.platform}</p>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            ${renderStars(course.rating)}
+                            <span class="text-sm font-semibold px-3 py-1 rounded-full ${course.type === 'Free' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'}">${course.type}</span>
+                        </div>
+                        
+                        <div class="bg-background p-4 rounded-lg border border-border">
+                            <h3 class="text-lg font-semibold mb-2">About this course</h3>
+                            <p class="text-text-secondary">${course.description}</p>
+                        </div>
+                        
+                        <div class="bg-background p-4 rounded-lg border border-border">
+                            <h3 class="text-lg font-semibold mb-2">Your Progress: <span class="font-bold">${progress}%</span></h3>
+                            <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
+                               <div class="bg-primary h-4 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="flex justify-between text-sm mt-2 text-text-secondary">
+                               <button class="progress-update-btn hover:text-primary" data-course-id="${course.id}" data-progress="25">Mark 25%</button>
+                               <button class="progress-update-btn hover:text-primary" data-course-id="${course.id}" data-progress="50">Mark 50%</button>
+                               <button class="progress-update-btn hover:text-primary" data-course-id="${course.id}" data-progress="75">Mark 75%</button>
+                               <button class="progress-update-btn hover:text-primary" data-course-id="${course.id}" data-progress="100">Mark 100%</button>
+                            </div>
+                        </div>
+                        
+                        <a href="${course.searchLink}" target="_blank" class="w-full text-center block py-3 px-4 bg-primary text-white rounded-md hover:opacity-90 transition font-bold">${progress > 0 ? 'Continue Course' : 'Find Course'}</a>
+
+                        <div class="pt-4">
+                            <h3 class="text-xl font-bold">Related Courses</h3>
+                            <div class="grid md:grid-cols-3 gap-4 mt-4">
+                                ${relatedCourses.map(rc => `
+                                    <div class="bg-background p-4 rounded-lg border border-border flex flex-col">
+                                        <h4 class="font-bold text-sm">${rc.title}</h4>
+                                        <p class="text-xs text-text-secondary mt-1 flex-grow">${rc.instructor}</p>
+                                        <button class="text-sm text-primary font-semibold mt-2 view-course-btn text-left" data-course-id="${rc.id}">View Course &rarr;</button>
+                                    </div>
+                                `).join('') || '<p class="text-text-secondary col-span-3">No related courses found.</p>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                courseDetailModal.classList.remove('hidden');
+            };
+            
+            const handleProgressUpdate = (e) => {
+                const { courseId, progress } = e.target.dataset;
+                const newProgress = parseInt(progress, 10);
+                state.courseProgress[courseId] = newProgress;
+                renderCourses();
+                openCourseDetailModal(courseId);
+            };
+            
+            const closeCourseDetailModal = () => courseDetailModal.classList.add('hidden');
+
+            const renderStaticGuidance = () => {
+                guidanceAccordion.innerHTML = staticGuidanceData.map((item, index) => `
+                    <div class="bg-card rounded-lg shadow-sm mb-2 overflow-hidden">
+                        <h2>
+                            <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-text-primary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-accordion-target="guidance-body-${index}">
+                                <span>${item.title}</span>
+                                <svg class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                                </svg>
+                            </button>
+                        </h2>
+                        <div id="guidance-body-${index}" class="hidden p-5 border-t border-border">
+                            <p class="text-text-secondary">${item.content}</p>
+                        </div>
+                    </div>
+                `).join('');
+                
+                 guidanceAccordion.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetId = button.dataset.accordionTarget;
+                        const targetBody = document.getElementById(targetId);
+                        const isHidden = targetBody.classList.contains('hidden');
+                        targetBody.classList.toggle('hidden', !isHidden);
+                        button.querySelector('svg').classList.toggle('rotate-180', isHidden);
+                    });
+                });
+            };
+
+            const renderScheduler = () => {
+                scheduleGrid.innerHTML = '';
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                days.forEach(day => {
+                    const dayColumn = document.createElement('div');
+                    dayColumn.className = "border border-border rounded-lg p-2 min-h-[200px]";
+                    dayColumn.innerHTML = `<h3 class="font-bold text-center border-b border-border pb-2 mb-2">${day}</h3>`;
+                    
+                    const eventsForDay = state.scheduleData
+                        .filter(event => event.day === day)
+                        .sort((a, b) => a.time.localeCompare(b.time));
+
+                    eventsForDay.forEach(event => {
+                        const eventEl = document.createElement('div');
+                        eventEl.className = 'schedule-event p-2 rounded-md mb-2 text-sm cursor-pointer';
+                        eventEl.innerHTML = `
+                            <p class="font-bold">${event.subject}</p>
+                            <p class="text-xs">${event.time}</p>
+                            ${event.notes ? `<p class="text-xs mt-1 italic">${event.notes}</p>` : ''}
+                        `;
+                        eventEl.onclick = () => {
+                           state.scheduleData = state.scheduleData.filter(e => e.id !== event.id);
+                           renderScheduler();
+                        };
+                        dayColumn.appendChild(eventEl);
+                    });
+                    scheduleGrid.appendChild(dayColumn);
+                });
+            };
+
+            // --- Gemini API Call Logic ---
+            const callGeminiAPI = async (prompt, systemInstruction, useGoogleSearch = false) => {
+                const apiKey = ""; // Canvas will provide this
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                
+                const payload = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    systemInstruction: { parts: [{ text: systemInstruction }] },
+                };
+                
+                if (useGoogleSearch) {
+                    payload.tools = [{ "google_search": {} }];
+                }
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        let errorBody = 'Could not read error body.';
+                        try {
+                            errorBody = await response.text();
+                            console.error("API Error Body:", errorBody);
+                        } catch (e) {
+                            console.error("Failed to parse error body:", e);
+                        }
+                        throw new Error(`API error: ${response.status} ${response.statusText}`);
+                    }
+                    
+                    const result = await response.json();
+                     if (!result.candidates || result.candidates.length === 0) {
+                        console.warn("API returned no candidates:", result);
+                        throw new Error("API returned no candidates.");
+                    }
+                    return result.candidates?.[0]?.content?.parts?.[0]?.text;
+                } catch (error) {
+                    console.error("Gemini API call failed:", error.message);
+                    throw error;
+                }
+            };
+            
+            const parseJsonFromMarkdown = (text) => {
+                if (!text) return null;
+                const match = text.match(/```json\s*([\s\S]*?)\s*```/);
+                if (match && match[1]) {
+                    try {
+                        return JSON.parse(match[1]);
+                    } catch (e) {
+                        console.error("Failed to parse JSON from markdown", e, "Raw text:", match[1]);
+                        return null;
+                    }
+                }
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                     console.warn("Response is not a JSON markdown block and not valid JSON.", text);
+                }
+                return null;
+            };
+            
+            const createSearchLink = (course) => {
+                const query = encodeURIComponent(`${course.title} by ${course.instructor}`);
+                if (course.platform && course.platform.toLowerCase() === 'youtube') {
+                    return `https://www.youtube.com/results?search_query=${query}`;
+                }
+                return `https://www.google.com/search?q=${query}`;
+            };
+
+            // --- AI Feature Implementations ---
+
+            const fetchCoursesWithAI = async (isInitial = false) => {
+                if (state.isFetchingMoreCourses) return;
+                state.isFetchingMoreCourses = true;
+                
+                if(isInitial) state.coursesFetched = true;
+                
+                coursesLoader.classList.remove('hidden');
+
+                const topicsToFetch = courseTopics.slice(state.courseTopicIndex, state.courseTopicIndex + COURSES_PER_FETCH);
+                if (topicsToFetch.length === 0) {
+                    coursesLoader.classList.add('hidden');
+                    state.isFetchingMoreCourses = false;
+                    return; 
+                }
+                state.courseTopicIndex += COURSES_PER_FETCH;
+
+                const prompt = `
+                    Find real, high-quality online courses using Google Search for the following topics: ${topicsToFetch.join(', ')}.
+                    For each course, provide the official title, instructor/creator, and platform (e.g., YouTube, Coursera).
+                    Return the response as a valid JSON array inside a single markdown code block.
+                    Each object must have these keys: "title", "instructor", "platform", "type" (Free/Paid), and "description".
+                `;
+                const systemInstruction = "You are an AI course finder with Google Search access. Your purpose is to find real courses and return their details in a structured JSON format inside a markdown block. Be accurate and reliable.";
+
+                try {
+                    const aiResponse = await callGeminiAPI(prompt, systemInstruction, true);
+                    if(aiResponse) {
+                        const parsedCourses = parseJsonFromMarkdown(aiResponse);
+                        if (parsedCourses) {
+                            const newCourses = parsedCourses.map(c => ({
+                                ...c, 
+                                id: `course-${Date.now()}-${Math.random()}`,
+                                rating: (Math.random() * (4.9 - 4.2) + 4.2).toFixed(1),
+                                searchLink: createSearchLink(c)
+                            }));
+
+                            if (isInitial) {
+                                coursesData = newCourses;
+                            } else {
+                                coursesData.push(...newCourses);
+                            }
+                            renderCourses();
+                        } else {
+                           throw new Error("AI did not return valid JSON in the expected format. Raw response: " + aiResponse);
+                        }
+                    } else {
+                        throw new Error("Empty course data from AI");
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch courses with AI:", error);
+                    if(isInitial) {
+                         coursesGrid.innerHTML = `<p class="text-text-secondary col-span-full text-center">Sorry, we couldn't load fresh courses. Please try again later.</p>`;
+                    }
+                } finally {
+                   coursesLoader.classList.add('hidden');
+                   state.isFetchingMoreCourses = false;
+                }
+            };
+
+
+            const handleResumeImprovement = async () => {
+                const experience = experienceInput.value;
+                const skills = skillsInput.value;
+
+                if (!experience.trim() && !skills.trim()) {
+                    alert("Please fill in your Experience or Skills to improve them with AI.");
+                    return;
+                }
+
+                improveResumeBtn.disabled = true;
+                improveResumeBtnText.textContent = "Improving...";
+                improveResumeLoader.classList.remove('hidden');
+
+                const prompt = `
+                    Rewrite and improve the following resume sections for an Indian student/job seeker. Use professional language, action verbs, and quantify achievements where possible.
+
+                    Current Experience Section:
+                    ---
+                    ${experience}
+                    ---
+
+                    Current Skills Section:
+                    ---
+                    ${skills}
+                    ---
+                    
+                    Return the response as a JSON object inside a single markdown code block (e.g., \`\`\`json\n{...}\n\`\`\`). The JSON object must have two keys: "improvedExperience" and "improvedSkills".
+                `;
+                const systemInstruction = "You are an expert resume writer and career coach. Your task is to polish and enhance resume content. Respond ONLY with the JSON object inside a markdown block.";
+
+                try {
+                    const aiResponse = await callGeminiAPI(prompt, systemInstruction);
+                    if (aiResponse) {
+                        const parsedResponse = parseJsonFromMarkdown(aiResponse);
+                        if(parsedResponse) {
+                            if (parsedResponse.improvedExperience) {
+                                experienceInput.value = parsedResponse.improvedExperience;
+                            }
+                            if (parsedResponse.improvedSkills) {
+                                skillsInput.value = parsedResponse.improvedSkills;
+                            }
+                            updateResumePreview();
+                        } else {
+                           throw new Error("AI did not return valid JSON in the expected format.");
+                        }
+                    } else {
+                        throw new Error("Empty response from AI.");
+                    }
+                } catch (error) {
+                    alert("Sorry, there was an error improving your resume. The AI response might be invalid. Please try again.");
+                } finally {
+                    improveResumeBtn.disabled = false;
+                    improveResumeBtnText.textContent = "✨ Improve with AI";
+                    improveResumeLoader.classList.add('hidden');
+                }
+            };
+            
+            const handleStudyPlanGeneration = async () => {
+                const goal = studyGoalInput.value.trim();
+                if(!goal) {
+                    alert("Please enter a study goal to generate a plan.");
+                    return;
+                }
+                
+                generateStudyPlanBtn.disabled = true;
+                generatePlanBtnText.textContent = "Generating...";
+                generatePlanLoader.classList.remove('hidden');
+
+                const prompt = `
+                    Create a 7-day study plan for the following goal: "${goal}".
+                    Generate 2-3 study sessions per day.
+                    Format each session STRICTLY as: Day,HH:MM,Subject,Notes
+                    For example: Monday,08:00,Physics - Kinematics,Review concepts and solve 10 problems
+                    Each session must be on a new line. Do not add any other text, explanation, or markdown.
+                `;
+                const systemInstruction = "You are an academic planner AI. Create structured, actionable study schedules. Adhere strictly to the requested output format.";
+
+                try {
+                    const aiResponse = await callGeminiAPI(prompt, systemInstruction);
+                    if (aiResponse) {
+                        const lines = aiResponse.split('\n').filter(line => line.trim() !== '');
+                        const newEvents = lines.map(line => {
+                            const parts = line.split(',');
+                            if (parts.length < 4) return null;
+                            return {
+                                id: Date.now() + Math.random(),
+                                day: parts[0].trim(),
+                                time: parts[1].trim(),
+                                subject: parts[2].trim(),
+                                notes: parts.slice(3).join(',').trim()
+                            };
+                        }).filter(Boolean);
+
+                        state.scheduleData = [...state.scheduleData, ...newEvents];
+                        renderScheduler();
+                    } else {
+                         throw new Error("Empty response from AI.");
+                    }
+
+                } catch (error) {
+                    alert("Sorry, there was an error generating your study plan. Please try again.");
+                } finally {
+                    generateStudyPlanBtn.disabled = false;
+                    generatePlanBtnText.textContent = "✨ Generate AI Study Plan";
+                    generatePlanLoader.classList.add('hidden');
+                }
+            };
+
+            const handleCourseSearch = async (e, isContinuation = false) => {
+                if(e) e.preventDefault();
+                if (state.isSearchingCourses) return;
+                state.isSearchingCourses = true;
+                
+                let userQuery;
+
+                if (isContinuation) {
+                    userQuery = state.currentSearchQuery;
+                    if (!userQuery) {
+                        state.isSearchingCourses = false;
+                        return;
+                    }
+                    courseFinderScrollLoader.classList.remove('hidden');
+                } else {
+                    userQuery = courseFinderInput.value.trim();
+                    if (!userQuery) {
+                        state.isSearchingCourses = false;
+                        return;
+                    }
+                    state.currentSearchQuery = userQuery;
+                    courseFinderLoader.classList.remove('hidden');
+                    courseFinderResults.classList.add('hidden');
+                    courseFinderResults.innerHTML = ''; // Clear previous results
+                    courseFinderForm.querySelector('button').disabled = true;
+                }
+
+                const systemPrompt = `You are an AI course finder with Google Search access. Find 3-5 real, currently available online courses based on the user's query. ${isContinuation ? 'Provide different courses than the last set.' : ''} Return the response as a valid JSON array of objects inside a single markdown code block. Each object must have these keys: "title", "instructor", "platform", "type" (Free/Paid), and "description".`;
+                const prompt = `Find courses about: ${userQuery}`;
+
+                try {
+                    const aiResponse = await callGeminiAPI(prompt, systemPrompt, true);
+                    if (aiResponse) {
+                        const foundCourses = parseJsonFromMarkdown(aiResponse);
+                        
+                        if (foundCourses && Array.isArray(foundCourses)) {
+                             const enrichedCourses = foundCourses.map(course => {
+                                const newCourse = {
+                                    ...course,
+                                    id: `course-${Date.now()}-${Math.random()}`,
+                                    rating: course.rating || (Math.random() * (4.9 - 4.2) + 4.2).toFixed(1),
+                                    searchLink: createSearchLink(course)
+                                };
+                                if (!coursesData.some(c => c.title === newCourse.title)) {
+                                    coursesData.push(newCourse);
+                                }
+                                return newCourse;
+                            });
+
+                            const courseCardsHTML = enrichedCourses.map(course => {
+                                 return `
+                                    <div class="bg-card p-4 rounded-lg shadow-md flex flex-col mb-4 border border-border">
+                                        <h3 class="text-md font-bold text-text-primary">${course.title || 'Untitled Course'}</h3>
+                                        <p class="text-text-secondary text-sm mt-1">By: ${course.instructor || 'Unknown Instructor'}</p>
+                                        <div class="flex items-center justify-between mt-3">
+                                           ${renderStars(course.rating)}
+                                           <span class="text-xs font-semibold px-2 py-1 rounded-full ${course.type === 'Free' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'}">${course.type || 'N/A'}</span>
+                                        </div>
+                                        <button data-course-id="${course.id}" class="view-course-btn mt-4 text-center w-full py-2 px-3 bg-primary/10 text-primary font-semibold rounded-md hover:bg-primary/20 transition text-sm">View Details</button>
+                                    </div>
+                                `;
+                            }).join('');
+                            
+                            const resultsContainer = document.createElement('div');
+                            resultsContainer.innerHTML = courseCardsHTML;
+                            courseFinderResults.appendChild(resultsContainer);
+                            
+                        } else if (!isContinuation) {
+                            courseFinderResults.innerHTML = `<p>${aiResponse.replace(/(\r\n|\n|\r)/g, '<br>')}</p>`;
+                        }
+
+                    } else if (!isContinuation) {
+                        courseFinderResults.innerHTML = "<p>Sorry, I couldn't find any specific courses for that query. Please try being more specific.</p>";
+                    }
+                } catch (error) {
+                    console.error("Course Search Error:", error);
+                     if (!isContinuation) {
+                        courseFinderResults.innerHTML = "<p>Apologies, there was an error connecting to the AI. Please check your connection and try again.</p>";
+                    }
+                } finally {
+                    courseFinderLoader.classList.add('hidden');
+                    courseFinderResults.classList.remove('hidden');
+                    courseFinderForm.querySelector('button').disabled = false;
+                    courseFinderScrollLoader.classList.add('hidden');
+                    state.isSearchingCourses = false;
+                }
+            };
+
+            const handleGuidanceQuery = async (e) => {
+                e.preventDefault();
+                const userQuery = guidanceInput.value.trim();
+                if (!userQuery) return;
+
+                guidanceLoader.classList.remove('hidden');
+                guidanceResults.classList.add('hidden');
+                guidanceForm.querySelector('button').disabled = true;
+
+                const systemPrompt = "You are an expert career and academic counselor for Indian students with access to Google Search. Provide clear, encouraging, and actionable advice based on the latest information. Structure your response with headings and bullet points for readability. Use markdown for formatting.";
+                
+                try {
+                    const aiResponse = await callGeminiAPI(userQuery, systemPrompt, true);
+                    if (aiResponse) {
+                        let formattedResponse = aiResponse
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/^\* (.*$)/gm, '<li class="ml-4 list-disc">$1</li>')
+                            .replace(/(\r\n|\n|\r)/g, '<br>')
+                            .replace(/<li><br>/g, '<li>')
+                            .replace(/<br><\/li>/g, '</li>');
+
+                        guidanceResults.innerHTML = formattedResponse;
+                    } else {
+                        guidanceResults.innerHTML = "<p>I'm sorry, I couldn't generate guidance for that topic. Could you please rephrase your question?</p>";
+                    }
+                } catch (error) {
+                    guidanceResults.innerHTML = "<p>Apologies, there was an error connecting to the AI. Please try again.</p>";
+                } finally {
+                    guidanceLoader.classList.add('hidden');
+                    guidanceResults.classList.remove('hidden');
+                    guidanceForm.querySelector('button').disabled = false;
+                }
+            };
+
+            const handleChatSubmit = async (e) => {
+                e.preventDefault();
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) return;
+
+                addChatMessage(userMessage, 'user');
+                chatInput.value = '';
+                chatLoader.classList.remove('hidden');
+                chatForm.querySelector('button').disabled = true;
+                
+                const systemPrompt = "You are Entrest AI, a helpful and encouraging assistant for students in India preparing for entrance exams (like JEE, NEET, UPSC) and jobs. Be concise, supportive, and provide actionable advice. If asked for opinions, be neutral. If asked about something outside of academics or career, politely decline.";
+
+                try {
+                    const aiResponse = await callGeminiAPI(userMessage, systemPrompt);
+                    if (aiResponse) {
+                        addChatMessage(aiResponse, 'ai');
+                    } else {
+                        addChatMessage("Sorry, I couldn't generate a response. Please try again.", 'ai');
+                    }
+                } catch (error) {
+                    addChatMessage("Apologies, I'm having trouble connecting right now. Please check your connection and try again later.", 'ai');
+                } finally {
+                    chatLoader.classList.add('hidden');
+                    chatForm.querySelector('button').disabled = false;
+                }
+            };
+
+            // --- UI Logic ---
+            const updateResumePreview = () => {
+                const formData = new FormData(resumeForm);
+                document.getElementById('preview-name').textContent = formData.get('name') || 'Your Name';
+                const email = formData.get('email') || 'your.email@example.com';
+                const phone = formData.get('phone') || '+91 12345 67890';
+                document.getElementById('preview-contact').textContent = `${email} | ${phone}`;
+                document.getElementById('preview-education').textContent = formData.get('education') || 'Your education details here...';
+                document.getElementById('preview-experience').textContent = formData.get('experience') || 'Your experience details here...';
+                document.getElementById('preview-skills').textContent = formData.get('skills') || 'Your skills here...';
+            };
+
+            const regenerateTemplate = () => {
+                resumePreviewContainer.classList.remove(...resumeTemplates);
+                state.resumeTemplateIndex = (state.resumeTemplateIndex + 1) % resumeTemplates.length;
+                resumePreviewContainer.classList.add(resumeTemplates[state.resumeTemplateIndex]);
+            };
+
+            const addChatMessage = (message, sender) => {
+                const messageEl = document.createElement('div');
+                messageEl.className = 'flex items-start gap-3';
+                if (sender === 'user') {
+                    messageEl.classList.add('justify-end');
+                    messageEl.innerHTML = `
+                        <div class="bg-primary text-white rounded-lg p-3 max-w-lg">
+                            <p class="text-left">${message}</p>
+                        </div>
+                        <div class="p-2 bg-gray-300 dark:bg-gray-600 text-text-primary rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center">You</div>
+                    `;
+                } else {
+                    messageEl.innerHTML = `
+                        <div class="p-2 bg-primary text-white rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center">AI</div>
+                        <div class="bg-gray-200 dark:bg-gray-700 rounded-lg p-3 max-w-lg">
+                            <p class="text-left">${message}</p>
+                        </div>
+                    `;
+                }
+                chatWindow.appendChild(messageEl);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            };
+
+            // --- INITIALIZATION ---
+            function init() {
+                applyTheme();
+                const initialSection = window.location.hash.substring(1) || 'home';
+                switchPage(initialSection);
+                renderStaticGuidance();
+                renderScheduler();
+
+                // --- EVENT LISTENERS ---
+                themeToggle.addEventListener('click', toggleTheme);
+                
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        switchPage(link.dataset.section);
+                    });
+                });
+                
+                homeCardLinks.forEach(card => {
+                    card.addEventListener('click', () => {
+                        switchPage(card.dataset.sectionLink);
+                    });
+                });
+
+                // Resume Builder Listeners
+                resumeForm.addEventListener('keyup', updateResumePreview);
+                regenerateTemplateBtn.addEventListener('click', regenerateTemplate);
+                downloadPdfBtn.addEventListener('click', () => {
+                    const element = document.getElementById('resume-content');
+                    const opt = {
+                      margin:       0.5,
+                      filename:     'resume.pdf',
+                      image:        { type: 'jpeg', quality: 0.98 },
+                      html2canvas:  { scale: 2 },
+                      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                    };
+                    html2pdf().from(element).set(opt).save();
+                });
+                improveResumeBtn.addEventListener('click', handleResumeImprovement);
+
+
+                // Course Listeners - Using Event Delegation
+                courseFinderResults.addEventListener('click', (e) => {
+                    const button = e.target.closest('.view-course-btn');
+                    if (button) {
+                         openCourseDetailModal(button.dataset.courseId);
+                    }
+                });
+                 coursesGrid.addEventListener('click', (e) => {
+                    const button = e.target.closest('.view-course-btn');
+                    if (button) {
+                         openCourseDetailModal(button.dataset.courseId);
+                    }
+                });
+                 courseModalContent.addEventListener('click', (e) => {
+                    const progressBtn = e.target.closest('.progress-update-btn');
+                    const viewBtn = e.target.closest('.view-course-btn');
+                    if(progressBtn) handleProgressUpdate(e);
+                    if(viewBtn) openCourseDetailModal(viewBtn.dataset.courseId);
+                 });
+                closeCourseModalBtn.addEventListener('click', closeCourseDetailModal);
+
+                window.addEventListener('scroll', () => {
+                    if (state.currentPage === 'courses' && !state.isFetchingMoreCourses && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+                        fetchCoursesWithAI(false);
+                    }
+                });
+
+                courseFinderResults.addEventListener('scroll', () => {
+                    if (courseFinderResults.scrollTop + courseFinderResults.clientHeight >= courseFinderResults.scrollHeight - 5) {
+                        handleCourseSearch(null, true);
+                    }
+                });
+
+                courseFinderForm.addEventListener('submit', handleCourseSearch);
+                
+                // Scheduler Listener
+                scheduleForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(scheduleForm);
+                    const newEvent = {
+                        id: Date.now(),
+                        subject: formData.get('subject'),
+                        day: formData.get('day'),
+                        time: formData.get('time'),
+                        notes: formData.get('notes'),
+                    };
+                    state.scheduleData.push(newEvent);
+                    renderScheduler();
+                    scheduleForm.reset();
+                });
+                generateStudyPlanBtn.addEventListener('click', handleStudyPlanGeneration);
+                
+                // Guidance Listener
+                guidanceForm.addEventListener('submit', handleGuidanceQuery);
+
+                // Chat Listener
+                chatForm.addEventListener('submit', handleChatSubmit);
+            }
+
+            init();
+        });
+    </script>
+
+</body>
+
+</html>
+
